@@ -54,9 +54,9 @@ function App() {
                                 <tbody>
                                 {arrivalsData?.map((arrival, i) => (
                                     <tr key={i} className="hover:bg-gray-50">
-                                        <td className="px-4 py-2 border-b">{arrival.route}</td>
-                                        <td className="px-4 py-2 border-b">{arrival.destination}</td>
-                                        <td className="px-4 py-2 border-b">{arrival.arrivalTime}</td>
+                                        <td className="px-4 py-2 border-b">{arrival.lineName}</td>
+                                        <td className="px-4 py-2 border-b">{arrival.destinationName}</td>
+                                        <td className="px-4 py-2 border-b">{arrival.expectedArrival}</td>
                                     </tr>
                                 ))}
                                 </tbody>
