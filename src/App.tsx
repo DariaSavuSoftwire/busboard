@@ -11,11 +11,18 @@ function App() {
 
     return (
         <>
-            <h1 className="text-3xl font-bold underline text-center text-cyan-600 m-4"
-            >BusBoard</h1>
+            <h1 className="text-3xl font-bold underline text-center text-cyan-600 m-4">
+                BusBoard
+            </h1>
             <button onClick={getArrivalsData}>Get Arrivals</button>
-            <div>{arrivalsData && arrivalsData!.map((arrival, i) => (
-                <pre key={i}>{JSON.stringify(arrival, null, 2)}</pre>))}</div>
+            <div>{
+                arrivalsData &&
+                arrivalsData.map((arrival, i) => (
+                    <pre key={i}>
+                    {JSON.stringify(arrival, null,2)}
+                    </pre>
+                ))}
+            </div>
         </>
     )
 }
