@@ -19,7 +19,7 @@ function App() {
                 arrivalsData &&
                 arrivalsData.map((arrival, i) => (
                     <pre key={i}>
-                    {JSON.stringify(arrival, null,2)}
+                    {JSON.stringify(arrival, null, 2)}
                     </pre>
                 ))}
             </div>
