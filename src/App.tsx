@@ -1,29 +1,71 @@
 import {useState} from "react";
 import {getArrivals} from './backend/fetchArrivals.ts'
+import type {ArrivalData} from "./interfaces/ArrivalData.ts";
 
 function App() {
-    const [arrivalsData, setArrivalsData] = useState<string[]>();
+    const [arrivalsData, setArrivalsData] = useState<ArrivalData[]>();
+    const [stopCode, setStopCode] = useState<string>();
+    const [errorMessage, setErrorMessage] = useState<string>();
 
     async function getArrivalsData() {
-        const arrivalsData = await getArrivals("490008660N");
-        setArrivalsData(arrivalsData);
+        if (!stopCode) {
+            setErrorMessage("Please specify a stop code");
+            return;
+        }
+        try {
+            const arrivalsData = await getArrivals(stopCode);
+            setArrivalsData(arrivalsData);
+            setErrorMessage("");
+        } catch {
+            setErrorMessage("Timetable could not be retrieved");
+        }
+
     }
 
     return (
-        <>
-            <h1 className="text-3xl font-bold underline text-center text-cyan-600 m-4">
+        <div className="m-4">
+            <h1 className="text-cyan-600 text-3xl font-bold underline text-center m-4">
                 BusBoard
             </h1>
-            <button onClick={getArrivalsData}>Get Arrivals</button>
-            <div>{
-                arrivalsData &&
-                arrivalsData.map((arrival, i) => (
-                    <pre key={i}>
-                    {JSON.stringify(arrival, null, 2)}
-                    </pre>
-                ))}
+            <div className=" gap-y-6 flex flex-col items-center p-6">
+                <div className="p-4">
+                    <input
+                        className="p-2 border-2 m-2"
+                        placeholder={"Enter a stop code..."}
+                        onChange={(event) => setStopCode(event.target.value)}>
+                    </input>
+                    <button
+                        className="p-2 border-2 border-blue-700 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                        onClick={getArrivalsData}>Get Arrivals
+                    </button>
+                </div>
+                <>
+                    {errorMessage
+                        ? <div>{errorMessage}</div>
+                        : <div className=" w-full max-w-3xl t-6">
+                            <table className="min-w-full border border-gray-200">
+                                <thead className="bg-gray-100">
+                                <tr>
+                                    <th className="text-left px-4 py-2 border-b">Route</th>
+                                    <th className="text-left px-4 py-2 border-b">Destination</th>
+                                    <th className="text-left px-4 py-2 border-b">Arriving In (min)</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {arrivalsData?.map((arrival, i) => (
+                                    <tr key={i} className="hover:bg-gray-50">
+                                        <td className="px-4 py-2 border-b">{arrival.lineName}</td>
+                                        <td className="px-4 py-2 border-b">{arrival.destinationName}</td>
+                                        <td className="px-4 py-2 border-b">{arrival.expectedArrival}</td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </>
             </div>
-        </>
+        </div>
     )
 }
 
