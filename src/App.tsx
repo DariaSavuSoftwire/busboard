@@ -31,7 +31,7 @@ function App() {
                 <div className="p-4">
                     <input
                         className="p-2 border-2 m-2"
-                        placeholder={"Enter a stopcode..."}
+                        placeholder={"Enter a stop code..."}
                         onChange={(event) => setStopCode(event.target.value)}>
                     </input>
                     <button
